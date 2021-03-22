@@ -1,0 +1,27 @@
+﻿@page
+@model FizzBuzzWebv4.Pages.HistoriaModel
+@{
+    @if (Model.FizzBuzz != null)
+    {
+        <h2>Historia wyszukiwania</h2>
+        <div class="row mb-3"></div>
+        <h6>Ostatnio wyszukiwana liczba to @Model.FizzBuzz.Number.</h6>
+        <h6>Ostatnio wyszukiwano dnia @Model.FizzBuzz.Date.ToString("dd/MM/yyyy") o godzinie @Model.FizzBuzz.Date.ToString("HH:mm").</h6>
+        @if(Model.FizzBuzz.Result != "")
+        { 
+            <h6>Ostatni wynik to @Model.FizzBuzz.Result.</h6>
+        }
+        else
+        {
+            <h6>Liczba nie spełniła kryteriów Fizz/Buzz.</h6>
+        }
+    }
+    else
+    {
+        <div class="text-center">
+            <div class="row mb-5"></div>
+            <div class="row mb-5"></div>
+            <h1>Brak historii wyszukiwania.</h1>
+        </div>
+    }
+}
