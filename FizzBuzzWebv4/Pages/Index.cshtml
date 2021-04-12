@@ -1,8 +1,6 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
-}
 <div class="text-center">
     <div class="row mb-5"></div>
     <div class="row mb-5"></div>
@@ -19,7 +17,7 @@
     @if (Model.FizzBuzz != null)
     {
         if (Model.FizzBuzz.Number == null || Model.FizzBuzz.Number < 0 || Model.FizzBuzz.Number > 1000) ;
-        else if (Model.FizzBuzz.Result == "")
+        else if (Model.FizzBuzz.Result == "Brak")
         {
             <p>Liczba @Model.FizzBuzz.Number nie spełnia kryteriów Fizz/Buzz. </p>
         }
@@ -29,3 +27,4 @@
         }
     }
 </div>
+}

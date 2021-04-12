@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using FizzBuzzWebv4.Data;
 
 namespace FizzBuzzWebv4.Pages
 {
@@ -15,33 +16,29 @@ namespace FizzBuzzWebv4.Pages
     {
         [BindProperty]
         public FizzBuzz FizzBuzz { get; set; }
-        [BindProperty(SupportsGet = true)]
-        public string Name { get; set; }
         private readonly ILogger<IndexModel> _logger;
-
-        public IndexModel(ILogger<IndexModel> logger)
+        private readonly FizzBuzzContext _context;
+        public IndexModel(ILogger<IndexModel> logger, FizzBuzzContext context)
         {
             _logger = logger;
+            _context = context;
         }
-
-        public void OnGet()
+        public async Task<IActionResult> OnPostAsync()
         {
-            if (string.IsNullOrWhiteSpace(Name))
-                Name = "User";
-        }
-
-        public IActionResult OnPost()
-        {
-            if (FizzBuzz.Number % 3 == 0 && FizzBuzz.Number % 5 == 0)
-                FizzBuzz.Result = "Fizzbuzz";
-            else if (FizzBuzz.Number % 3 == 0)
-                FizzBuzz.Result = "Fizz";
-            else if (FizzBuzz.Number % 5 == 0)
-                FizzBuzz.Result = "Buzz";
-            else
-                FizzBuzz.Result = "";
+            FizzBuzz.Date = DateTime.Now;
+            FizzBuzz.Result = "";
+            if (FizzBuzz.Number % 3 == 0)
+                FizzBuzz.Result += "Fizz";
+            if (FizzBuzz.Number % 5 == 0)
+                FizzBuzz.Result += "buzz";
+            if (FizzBuzz.Result == "")
+                FizzBuzz.Result = "Brak";
             if (ModelState.IsValid)
+            {
                 HttpContext.Session.SetString("SessionAddress", JsonConvert.SerializeObject(FizzBuzz));
+                _context.FizzBuzz.Add(FizzBuzz);
+                await _context.SaveChangesAsync();
+            }
             return Page();
         }
     }
